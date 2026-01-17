@@ -1,0 +1,38 @@
+USE college_fest_db;
+
+-- 1. Display all departments
+SELECT * FROM department;
+
+-- 2. Display all students with their department names
+SELECT s.Student_Name, d.Dept_Name
+FROM student s
+JOIN department d ON s.Dept_ID = d.Dept_ID;
+
+-- 3. Display all events with organizer name
+SELECT e.Event_Name, o.Organizer_Name
+FROM event e
+LEFT JOIN organizer o ON e.Organizer_ID = o.Organizer_ID;
+
+-- 4. Display all events with venue details
+SELECT e.Event_Name, v.Venue_Name, v.Capacity
+FROM event e
+JOIN venue v ON e.Venue_ID = v.Venue_ID;
+
+-- 5. List students participating in events with their position
+SELECT s.Student_Name, e.Event_Name, p.Position
+FROM participation p
+JOIN student s ON p.Student_ID = s.Student_ID
+JOIN event e ON p.Event_ID = e.Event_ID;
+
+-- 6. Count number of participants per event
+SELECT e.Event_Name, COUNT(p.Student_ID) AS Total_Participants
+FROM event e
+LEFT JOIN participation p ON e.Event_ID = p.Event_ID
+GROUP BY e.Event_Name;
+
+-- 7. List winners of each event
+SELECT e.Event_Name, s.Student_Name
+FROM participation p
+JOIN student s ON p.Student_ID = s.Student_ID
+JOIN event e ON p.Event_ID = e.Event_ID
+WHERE p.Position = 'Winner';
